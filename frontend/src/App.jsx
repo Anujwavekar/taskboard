@@ -1,14 +1,21 @@
-import { useEffect, useState } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import LoginPage from "./pages/LoginPage";
+import TasksPage from "./pages/TasksPage";
 
 export default function App() {
-  const [status, setStatus] = useState("Checking...");
-
-  useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/health`)
-      .then((r) => r.text())
-      .then(setStatus)
-      .catch(() => setStatus("API unreachable"));
-  }, []);
-
-  return <h1>TaskBoard API status: {status}</h1>;
+  return (
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      <Route
+        path="/tasks"
+        element={
+          <ProtectedRoute>
+            <TasksPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route path="*" element={<Navigate to="/tasks" replace />} />
+    </Routes>
+  );
 }
