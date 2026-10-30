@@ -4,8 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.core.errors import register_error_handlers
 from app.core.limiter import limiter
-from app.routers import auth, health
-
+from app.routers import auth, health, tasks
 app = FastAPI(title="TaskBoard API")
 
 app.state.limiter = limiter
@@ -22,3 +21,5 @@ app.add_middleware(
 
 app.include_router(health.router)
 app.include_router(auth.router)
+app.include_router(health.router)
+app.include_router(tasks.router)
